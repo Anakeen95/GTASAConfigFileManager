@@ -1,4 +1,4 @@
-﻿# GTA SA Config changer #
+﻿# GTA SA Config Manager #
 
 <# Variables #>
 $path10 = "F:\Speedrun\Grand Theft Auto San Andreas 1.01\back up\Game Config\1.0\gta_sa.set"
