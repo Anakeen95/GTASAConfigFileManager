@@ -10,6 +10,8 @@ $isconfigfileexists = ""
 $dxwndpath = Get-Content .\Paths\pathdxwnd.txt
 $gta10path = Get-Content .\Paths\pathgta10.txt
 $gta101path = Get-Content .\Paths\pathgta101.txt
+$exe10path = Get-Content .\Paths\pathexe10.txt
+$exe101path = Get-Content .\Paths\pathexe101.txt
 
 <# Functions #>
 Function ShowMenu {
@@ -24,8 +26,12 @@ Function ShowMenu {
     Write-Host "1. Change config file for GTA SA 1.0"
     
     Write-Host "2. Change config file for GTA SA 1.01"
+
+    Write-Host "3. Change exe file for GTA SA 1.0"
+
+    Write-Host "4. Change exe file for GTA SA 1.01"
     
-    Write-Host "3. Exit"
+    Write-Host "5. Exit"
 
     Write-Host -ForegroundColor Yellow -BackgroundColor Black "--------------------------------------"
 }
@@ -40,7 +46,7 @@ Function InstallConfigFile {
    if ((Test-Path -Path $gtasauserfilespath) -ne "True") {
       Clear-Host
       
-      Write-Host -ForegroundColor Red "GTA SA User Files folder doesn't exists. Please make sure the folder exits before installing the config file"
+      Write-Host -ForegroundColor Red "GTA SA User Files folder doesn't exists. Please make sure the folder exists before installing the config file"
 
       Write-Host "`n"
 
@@ -60,13 +66,13 @@ Function InstallConfigFile {
 
       if ($isconfigfileexists -eq $true -or $isconfigfileexists -eq $false) {
          if ($versionselected -eq "1.0") {
-            Write-Host "Proceeding to install" $versionselected "confing file into the GTA User Files folder....."
+            Write-Host "Proceeding to install" $versionselected "config file into the GTA User Files folder....."
 
             Copy-Item -Path $config10path -Destination $currentconfigfilepath
 
             Write-Host "`n"
 
-            Write-Host -ForegroundColor Green $versionselected "confing file installed successfully"
+            Write-Host -ForegroundColor Green $versionselected "config file installed successfully"
 
             $isconfigfileexists = ""
 
@@ -76,13 +82,13 @@ Function InstallConfigFile {
             
          }
          else {
-            Write-Host "Proceeding to install" $versionselected "confing file into the GTA User Files folder....."
+            Write-Host "Proceeding to install" $versionselected "config file into the GTA User Files folder....."
 
             Copy-Item -Path $config101path -Destination $currentconfigfilepath
 
             Write-Host "`n"
 
-            Write-Host -ForegroundColor Green $versionselected "confing file installed successfully"
+            Write-Host -ForegroundColor Green $versionselected "config file installed successfully"
 
             $isconfigfileexists = ""
 
@@ -99,15 +105,26 @@ Function OpenDxwndGTASA {
 
    Write-Host "Opening Dxwnd...."
 
-   Start-Process -FilePath "dxwnd.exe" -WorkingDirectory $dxwndpath
+   $isdxwndrunning = (Get-Process dxwnd -ErrorAction SilentlyContinue).Count
+
+   if ($isdxwndrunning -gt 0) {
+      Write-Host "`n"
+
+      Write-Host -ForegroundColor Yellow "Dxwnd is already opened"
+
+   }
+   else {
+      Write-Host "`n"
+
+      Start-Process -FilePath "dxwnd.exe" -WorkingDirectory $dxwndpath
+      
+      Write-Host "`n"
+
+      Write-Host -ForegroundColor Green "Dxwnd opened successfully"
+
+   }
 
    Write-Host "`n"
-
-   Write-Host "Dxwnd opened successfully"
-
-   Write-Host "`n"
-
-   Read-Host "Press any key to continue..."
 
    Write-Host "Opening Grand Theft Auto San Andreas "$versionselected "...."
 
@@ -116,7 +133,7 @@ Function OpenDxwndGTASA {
 
       Start-Process -FilePath "gta_sa.exe" -WorkingDirectory $gta10path
 
-      Write-Host "Grand Theft Auto San Andreas" $versionselected "opened successfully"
+      Write-Host -ForegroundColor Green "Grand Theft Auto San Andreas" $versionselected "opened successfully"
 
       $versionselected = ""
 
@@ -129,7 +146,7 @@ Function OpenDxwndGTASA {
 
       Start-Process -FilePath "gta_sa.exe" -WorkingDirectory $gta101path
 
-      Write-Host "Grand Theft Auto San Andreas" $versionselected "opened successfully"
+      Write-Host -ForegroundColor Green "Grand Theft Auto San Andreas" $versionselected "opened successfully"
 
       $versionselected = ""
 
@@ -137,6 +154,45 @@ Function OpenDxwndGTASA {
 
       Read-Host "Press any key to continue..."
    }
+}
+
+Function ChangeExe {
+   Clear-Host
+
+   Write-Host "Proceeding to change the current exe file for" $versionselected "exe file"
+
+   if ($versionselected -eq "1.0") {
+      Write-Host "`n"
+
+      Copy-Item -Path $exe10path -Destination $gta10path
+      
+      Write-Host "`n"
+
+      Write-Host -ForegroundColor Green $versionselected "exe file changed successfully"
+
+      $versionselected = ""
+
+      Write-Host "`n"
+
+      Read-Host "Press any key to continue..."
+
+   }
+   else {
+      Write-Host "`n"
+
+      Copy-Item -Path $exe101path -Destination $gta101path
+      
+      Write-Host "`n"
+
+      Write-Host -ForegroundColor Green $versionselected "exe file changed successfully"
+
+      $versionselected = ""
+
+      Write-Host "`n"
+
+      Read-Host "Press any key to continue..."
+   }
+
 }
 
 <# Main #>
@@ -157,7 +213,7 @@ do {
 
              Write-Host "`n"
 
-             Write-Host "The location of your backup file for GTA SA 1.0 is: " $config10path
+             Write-Host "The location of your backup config file for GTA SA 1.0 is: " $config10path
 
              Write-Host "`n"
 
@@ -192,7 +248,7 @@ do {
 
              Write-Host "`n"
 
-             Write-Host "The location of your backup file for SA 1.01 is: " $config101path
+             Write-Host "The location of your backup config file for SA 1.01 is: " $config101path
 
              Write-Host "`n"
 
@@ -221,6 +277,77 @@ do {
           '3' {
             Clear-Host
 
+            Write-Host -ForegroundColor Green "You chose to change the exe file to GTA SA 1.0 Executable"
+
+            $versionselected = "1.0"
+
+            Write-Host "`n"
+
+            Write-Host "The location of your backup exe file for GTA SA 1.0 is: " $exe10path
+
+            Write-Host "`n"
+            
+            do { 
+               $confirmation = Read-Host "Are you Sure that is the correct backup path? [y/n]" 
+               
+               if ($confirmation -eq 'n') {
+                  Clear-Host
+                  
+                  Write-Host -ForegroundColor Yellow "Please review the path located in the text file for GTA SA 1.0 before installing the config file"
+
+                  Write-Host "`n"
+
+                  Read-Host "Press any key to continue..."
+
+                  exit
+               } 
+            }
+            while($confirmation -ne "y")
+
+            ChangeExe
+
+            OpenDxwndGTASA
+
+          }
+          '4' {
+
+            Clear-Host
+
+            Write-Host -ForegroundColor Green "You chose to change the exe file to GTA SA 1.01 Executable"
+
+            $versionselected = "1.0"
+
+            Write-Host "`n"
+
+            Write-Host "The location of your backup exe file for GTA SA 1.0 is: " $exe101path
+
+            Write-Host "`n"
+            
+            do { 
+               $confirmation = Read-Host "Are you Sure that is the correct backup path? [y/n]" 
+               
+               if ($confirmation -eq 'n') {
+                  Clear-Host
+                  
+                  Write-Host -ForegroundColor Yellow "Please review the path located in the text file for GTA SA 1.0 before installing the config file"
+
+                  Write-Host "`n"
+
+                  Read-Host "Press any key to continue..."
+
+                  exit
+               } 
+            }
+            while($confirmation -ne "y")
+
+            ChangeExe
+
+            OpenDxwndGTASA
+
+          }
+          '5' {
+            Clear-Host
+
              Write-host "You exit the program"
 
              Write-Host "`n"
@@ -246,4 +373,4 @@ do {
         }
     }
 } 
-until ($option -eq '3')
+until ($option -eq '5')

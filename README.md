@@ -15,8 +15,12 @@ path10.txt -> fill here the path where your back up of the config file realted t
 
 path101.txt -> fill here the path where your back up of the config file related to 1.01 GTA SA version is located.
 
-pathdxwnd.txt -> fil here the path where your DXWnd is located (the folder with all the files not the full path to the dxwnd.exe).
+pathdxwnd.txt -> fill here the path where your DXWnd is located (the folder with all the files not the full path to the dxwnd.exe).
 
 pathgta10.txt -> fill here the path where you GTA San Andreas 1.0 version is located (the game folder not the full path to gta_sa.exe).
 
 pathgta101.txt -> fill here the path where you GTA San Andreas 1.01 version is located (the game folder not the full path to gta_sa.exe).
+
+exe10path.txt -> fill here the path where your back up of the exe file related to 1.0 GTA SA version is located.
+
+exe101path.txt -> fill here the path where your back up of the exe file related to 1.0 GTA SA version is located.
